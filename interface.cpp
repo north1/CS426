@@ -1,6 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "auditlog.h"
 
 int main() {
 	size_t bufSize = 100*sizeof(char);
