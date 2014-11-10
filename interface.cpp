@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void main() {
+int main() {
 	size_t bufSize = 100*sizeof(char);
 	char *inputLine, *cmd, *arg, *arg2;
 	inputLine = (char*)malloc(bufSize); //arbitrary size
@@ -15,7 +15,8 @@ void main() {
 			"verify [entry_no]\n"
 			"verifyall [log-file-name].log [out-file-name].txt\n"
 			"[Use ctrl+c to terminate program]\n\n");
-	
+		fflush(stdout);
+
 		getline(&inputLine, &bufSize, stdin); //Get the full input text
 		cmd = strtok(inputLine, " \n"); //Get the first word (should be the command))
 
@@ -55,5 +56,5 @@ void main() {
 		}
 	}
 
-	return;
+	return 0;
 }
