@@ -34,15 +34,25 @@ void add(char* message_string) {
 	
 	//Encrypt (with Keyj) the message_string, Dj
 	//call this encryptedMessage
-	
-	
+	int encryptedMessageLength = strlen(message_string) + AES_BLOCK_SIZE;
+	char * encryptedMessage = (char *) malloc(encryptedMessageLength);
+	encryptedMessage = encryptAES(message_string, strlen(message_string), key, /*TODO add iv */, strlen(message_string) + AES_BLOCK_SIZE);
+
 	//Form Yj = H(oldHashChain, encryptedMessage, type)
 	//call this hashChain
+	unsigned char * hashChain = (unsigned char *) malloc(20);
+	char chainContents[strlen(oldEntry.hashChain) + encryptedMessageLength /*+ strlen(type)?*/];
+	strcat(chainContents, oldEntry.hashChain);
+	strcat(chainContents, encryptedMessage);
+	//strcat(type); //???
+	SHA1(chainContents, strlen(oldEntry.hashChain) + encryptedMessageLength/*+strlen(type)?*/, chainContents);
 	
 	//Take Zj = MAC_Aj(hashChain)
 	//call this integrity
+	//TODO
 	
 	//Update Aj = H(Aj) (pretty sure we're only supposed to keep one at a time globally, except "T" (Server) needs access to A0)
+	//TODO
 	
 	return;
 }
