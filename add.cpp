@@ -14,13 +14,13 @@ void add(char* message_string) {
 	//Read the most recent entry, lastEntry (j-1th in descript)
 	//should contain oldType, oldEncryptedMessage, oldHashChain, oldIntegrity
 	//call it oldEntry
-	struct entry * oldEntry = (struct entry *) malloc(sizeof(struct entry)); 
+	struct entry * jminus1 = (struct entry *) malloc(sizeof(struct entry)); 
 	fseek(logFile, -(sizeof(struct entry)), SEEK_END); //TODO: test this thoroughly for off-by-ones and such?
-	fread(oldEntry, sizeof(struct entry), 1, logFile);
+	fread(jminus1, sizeof(struct entry), 1, logFile);
 
 	//Get the access code, Aj
 	//call this access
-	unsigned char access[20]; //TODO: assign this to...wherever the hell it's stored?
+	unsigned char Aj[20]; //TODO: assign this to...wherever the hell it's stored?
 
 	//Get the log entry type, Wj --- is this neccessary for us??
 	//call this type
@@ -34,13 +34,14 @@ void add(char* message_string) {
 	
 	//Encrypt (with Keyj) the message_string, Dj
 	//call this encryptedMessage
-	int encryptedMessageLength = strlen(message_string) + AES_BLOCK_SIZE;
-	char * encryptedMessage = (char *) malloc(encryptedMessageLength);
-	encryptedMessage = encryptAES(message_string, strlen(message_string), key, /*TODO add iv */, strlen(message_string) + AES_BLOCK_SIZE);
+	int EkD_len = strlen(message_string) + AES_BLOCK_SIZE;
+	char * EkD = (char *) malloc(EkD_len);
+	EkD = encryptAES(message_string, strlen(message_string), key, /*TODO add iv */, EkD_len);
 
 	//Form Yj = H(oldHashChain, encryptedMessage, type)
 	//call this hashChain
-	unsigned char * hashChain = (unsigned char *) malloc(20);
+	unsigned char * Y = (unsigned char *) malloc(20);
+	//TODO: Change this to use the YhashInput struct caleb built since that's apparently how we're doing this
 	char chainContents[strlen(oldEntry.hashChain) + encryptedMessageLength /*+ strlen(type)?*/];
 	strcat(chainContents, oldEntry.hashChain);
 	strcat(chainContents, encryptedMessage);

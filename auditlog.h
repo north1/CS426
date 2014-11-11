@@ -15,12 +15,12 @@ int pnonce = 0;
 struct Xi { 
     unsigned char p; 
     time_t d; 
-    unsigned char [20] Ao;
+    unsigned char Ao [20];
 };
 
 struct Mi { 
     unsigned char p; 
-    unsigned char [256] ksession; 
+    unsigned char ksession [256]; 
     unsigned char *EkMo; 
     int EkMo_len;
 };
@@ -31,7 +31,7 @@ struct Li {
     int EkD_len;
     unsigned char *Y; 
     int Y_len;
-    Z; 
+    //removed Z because unneeded
 };
 
 struct Dj { 
@@ -44,13 +44,15 @@ struct YhashInput {
     unsigned char * YminusOne; 
     unsigned char * EkD; 
     unsigned char * W; 
-}
+};
 
 struct entry {
-	int type; //entry type, possibly unnecessary, subject to change
-	char encryptedMessage[100] //arbitrary size, may change?
-	char hashChain[20] //note: initial entry should have hashChain of all zeros
-	char integrity[20] //= MAC_Aj(hashChain) -- definitely subject to change since I have no goddamn idea what MAC is
+	int W; //entry type, possibly unnecessary, subject to change
+	unsigned char * EkD; //arbitrary size, may change?
+	int EkD_len;
+	unsigned char * Y; //note: initial entry should have hashChain of all zeros
+	int Y_len;
+	unsigned char * Z; //= MAC_Aj(hashChain) -- definitely subject to change since I have no goddamn idea what MAC is
 };
 
 int logfileInitType = 0; 

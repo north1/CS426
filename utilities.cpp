@@ -147,3 +147,14 @@ unsigned char * decryptAES(unsigned char *ciphertext, int ciphertext_len,
 }
 
 
+/**
+ * "Message Authentication Code" i.e. a keyed hash function used for message authentication, which is based on a hash function.
+ * Uses OpenSSL's HMAC implementation to produce a...thing
+ * Sort of unnecessary since we're just wrapping HMAC, but fewer args this way.
+ */
+char * MAC(unsigned char * key, unsigned char * data) {
+	unsigned char * digest;
+	digest = HMAC(SHA1(), key, strlen(key), (unsigned char*)data, strlen(data), NULL, NULL);
+	//TODO: NOTE: TEST HERE!! It is possible that SHA1 is returning bytes as hex in char, meaning double length (and less random?)
+	return digest;
+}
