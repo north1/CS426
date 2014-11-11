@@ -47,10 +47,12 @@ struct YhashInput {
 }
 
 struct entry {
-	int type; //entry type, possibly unnecessary, subject to change
-	char encryptedMessage[100] //arbitrary size, may change?
-	char hashChain[20] //note: initial entry should have hashChain of all zeros
-	char integrity[20] //= MAC_Aj(hashChain) -- definitely subject to change since I have no goddamn idea what MAC is
+	int W; //entry type, possibly unnecessary, subject to change
+	unsigned char * EkD; //arbitrary size, may change?
+	int EkD_len;
+	unsigned char * Y //note: initial entry should have hashChain of all zeros
+	int Y_len;
+	unsigned char * Z //= MAC_Aj(hashChain) -- definitely subject to change since I have no goddamn idea what MAC is
 };
 
 int logfileInitType = 0; 
