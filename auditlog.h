@@ -6,7 +6,7 @@
 #include <openssl/aes.h>
 #include <openssl/evp.h>
 
-int logfileNum = 0;
+unsigned char logfileNum = 0;
 int pnonce = 0; 
 
 struct log { 
