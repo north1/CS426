@@ -1,3 +1,5 @@
+#ifndef AUDIT_LOG_INCLUDED
+#define AUDIT_LOG_INCLUDED
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -5,6 +7,7 @@
 #include <openssl/sha.h>
 #include <openssl/aes.h>
 #include <openssl/evp.h>
+#include "utilities.h"
 
 unsigned char logfileNum = 0;
 int pnonce = 0; 
@@ -24,3 +27,4 @@ int responseMessageType = 1;
 
 unsigned char * random128();
 unsigned char * random256();
+#endif

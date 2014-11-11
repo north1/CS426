@@ -1,4 +1,4 @@
-#include "auditlog.h"
+#include "utilities.h"
 
 unsigned char * random128() {
 	unsigned char * ret = (unsigned char*) malloc(16); //16 bytes = 128 bits
