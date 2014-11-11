@@ -4,6 +4,7 @@
 #include <openssl/evp.h>
 #include <openssl/err.h>
 #include <openssl/aes.h>
+#include <openssl/sha.h>
 #include <string.h>
 
 unsigned char * random128();

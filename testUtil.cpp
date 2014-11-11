@@ -20,6 +20,7 @@ int main(int argc, char**argv) {
 
     plaintext = 
         (unsigned char *)decryptAES(ciphertext, ciphertext_len, key, iv, &plaintext_len); 
+    plaintext[plaintext_len] = 0; 
 
     printf("plaintext length is %i ciphertext length is %i\n", plaintext_len, ciphertext_len); 
     printf("plaintext is <%s>\n", plaintext);
