@@ -3,6 +3,7 @@
 #include <time.h>
 #include <string.h>
 #include <openssl/sha.h>
+#include <openssl/aes.h>
 #include <openssl/evp.h>
 
 int logfileNum = 0;
