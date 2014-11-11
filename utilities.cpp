@@ -8,6 +8,13 @@ unsigned char * random128() {
 	return ret;
 }
 
+unsigned char * random160() {
+	unsigned char * ret = (unsigned char*) malloc(20); //16 bytes = 128 bits
+	for (int i = 0; i < 20; i++) {
+		ret[i] = (unsigned char)(rand()%256);	
+	}
+	return ret;
+}
 
 unsigned char * random256() {
 	unsigned char * ret = (unsigned char *) malloc(32); //32 bytes = 256 bits
@@ -25,7 +32,8 @@ void initOpenSSL() {
   OPENSSL_config(NULL);
 }
 
-char * encryptAES(unsigned char *plaintext, int plaintext_len, unsigned char *key, unsigned char *iv, int*ciphertext_len) { 
+char * encryptAES(unsigned char *plaintext, int plaintext_len, 
+        unsigned char *key, unsigned char *iv, int*ciphertext_len) { 
   /* Set up the key and iv. Do I need to say to not hard code these in a
    * real application? :-)
    */

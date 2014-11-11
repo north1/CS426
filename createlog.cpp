@@ -1,44 +1,54 @@
 #include "auditlog.h"
 
-
-//struct __attribute__((__packed__)) Xo { 
-struct Xo { 
-    unsigned char p; 
-    time_t d; 
-    unsigned char [20] Ao;
-}
-
 void createlog(char *logname) { 
     initOpenSSL();
     struct log * log = (struct log *)malloc(sizeof(struct log));
-    int ksession = rand(); 
+    unsigned char * ksession = random256(); 
+    unsigned char * iv = random128();
     time_t d = time(NULL); 
     unsigned char id = logfileNum; 
+    unsigned char *Ao = random160();
     logfileNum++; 
-    log->Ao = rand(); 
-    unsigned char * Xo = (int *)malloc(sizeof(unsigned char));
-    //Xo is p,d,Ao
-    Xo[0] = p; 
-    addToArray(Xo+1, d); 
+    struct Xi xo;
+    xo.p = p; 
+    xo.d = d; 
+    strncpy(xo.Ao, Ao, 20);
 
-    Xo[1] = log->d; 
-    Xo[2] = log->Ao;
-    //Xo[0] = don't need Xo because it is involved 
-    //in signing stuff
     int p = pnonce;
 
-    int Mo_len;
-    unsigned char *Mo = encryptAES(//encrypt Xo with ksession
-        
-    
-        
-    tCreatelog(p, id, Xo); 
+    int EkMo_len;
+    unsigned char *EkMo = encryptAES((unsigned char *)&xo, sizeof(struct Xi),
+            ksession, iv, &EkMo_len); 
 
-    int Wo = LogfileInitType; 
-    EkjDj = encrypt (d,dplus,id,
+    struct Mi Mo; 
+    Mo.p = p; 
+    Mo.ksession = ksession; 
+    Mo.EkMo = EkMo; 
+    Mo.EkMo_len = EkMo_len; 
+
+    tCreatelog(Mo); 
+
+    struct Li log; 
+    log.W = logfileInitType; 
+    struct Dj D; 
+    D.d = d; 
+    D.id = id; 
+    D.Mi = Mo; 
+    log.EkD = encryptAES((unsigned char *)&D, sizeof(struct Dj), 
+            ksession, iv, &(log.EkD_len));
+    unsigned char YminusOne [] = {
+        (unsigned char)0,(unsigned char)0,(unsigned char)0,(unsigned char)0,(unsigned char)0,
+        (unsigned char)0,(unsigned char)0,(unsigned char)0,(unsigned char)0,(unsigned char)0,
+        (unsigned char)0,(unsigned char)0,(unsigned char)0,(unsigned char)0,(unsigned char)0,
+        (unsigned char)0,(unsigned char)0,(unsigned char)0,(unsigned char)0,(unsigned char)0}; 
+    struct YhashInput in;
+    in.YminusOne = YminusOne; 
+    in.EkD = log.EkD; 
+    in
+    log.Y = hash(W
 
 }
 
-void tCreatelog(int p, int id, int *Xo) { 
+void tCreatelog(struct Mi Mo) { 
     //todo t's stuff in createlog
 }

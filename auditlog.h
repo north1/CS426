@@ -12,14 +12,39 @@
 unsigned char logfileNum = 0;
 int pnonce = 0; 
 
-struct log { 
-    int ksession; //random session key
-    int d; //current timestamp
-    //int dplus; //timestamp at which U will time out //don't need timeouts
-    int id; //unique id for log
-    //don't need certificate
-    int Ao; //random starting point
+struct Xi { 
+    unsigned char p; 
+    time_t d; 
+    unsigned char [20] Ao;
 };
+
+struct Mi { 
+    unsigned char p; 
+    unsigned char [256] ksession; 
+    unsigned char *EkMo; 
+    int EkMo_len;
+};
+
+struct Li { 
+    int W;
+    unsigned char * EkD;
+    int EkD_len;
+    unsigned char *Y; 
+    int Y_len;
+    Z; 
+};
+
+struct Dj { 
+    time_t d; 
+    unsigned char id; 
+    struct Mi Mi;
+};
+
+struct YhashInput { 
+    unsigned char * YminusOne; 
+    unsigned char * EkD; 
+    unsigned char * W; 
+}
 
 struct entry {
 	int type; //entry type, possibly unnecessary, subject to change
