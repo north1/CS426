@@ -22,4 +22,5 @@ int logfileInitType = 0;
 int responseMessageType = 1; 
 //int abnormalCloseType = 2; never happens because timeouts can't happen (TA is cool with this)
 
-
+unsigned char * random128();
+unsigned char * random256();

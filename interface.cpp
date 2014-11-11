@@ -5,7 +5,7 @@ int main() {
 	char *inputLine, *cmd, *arg, *arg2;
 	inputLine = (char*)malloc(bufSize); //arbitrary size
 
-    srand(time(NULL));
+	srand(time(NULL));
 
 	while (1) {
 		printf(	"Enter one of the following commands:\n"
@@ -24,8 +24,8 @@ int main() {
 			arg = strtok(NULL, " \n");
 			printf("Command: createlog\n");
 			printf("Argument: %s\n", arg);
-            //createlog(arg); 
-            pnonce++;
+		//createlog(arg); 
+            	pnonce++;
 		}
 
 		else if (strcmp(cmd, "add") == 0) {
