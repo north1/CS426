@@ -1,12 +1,20 @@
 #include "createlog.h"
 
 void tCreatelog(struct Mi Mo, unsigned char * iv) { 
+    //returns M1 = p, K1
     int Xo_len; 
     struct Xi *Xo = (struct Xi *)decryptAES(Mo.EkXi, Mo.EkXi_len, Mo.ksession, iv, &Xo_len);
     printf("T: ksession is:\n");
     print(Mo.ksession, 32);
     printf("T: time of log is %i\n", (int)(Xo->d));
     //returns X1 = p, IDlog,hash(Xo)
+    
+    //X1 = p,IDlog,hash(Xo) 
+    struct Xi X1; 
+    X1.p = Xo->p; 
+    //X1.d = 
+
+    
 }
 
 void createlog(char *logname) { 
@@ -15,7 +23,6 @@ void createlog(char *logname) {
     unsigned char * ksession = random256(); 
     printf("U: ksession is:\n");
     print(ksession, 32);
-    unsigned char * iv = random128();
     time_t d = time(NULL); 
     unsigned char id = ++logfileNum; 
     printf("U: time of log is %i\n", (int)d);

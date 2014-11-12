@@ -14,6 +14,7 @@ extern unsigned char logfileNum;
 extern int logfileInitType; 
 extern int responseMessageType; 
 extern int pnonce; 
+extern unsigned char iv[16]; 
 
 struct Xi { 
     unsigned char p; 

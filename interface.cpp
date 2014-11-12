@@ -4,7 +4,9 @@ unsigned char logfileNum;
 int pnonce; 
 int logfileInitType;
 int responseMessageType;
+unsigned char iv [16];
 int main() {
+    ustrncpy(iv, random128(), 16); 
     logfileNum = 1; 
     pnonce = 1; 
     logfileInitType = 0;
