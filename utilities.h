@@ -11,6 +11,7 @@ unsigned char * random128();
 unsigned char * random160();
 unsigned char * random256();
 void initOpenSSL();
+void print(unsigned char *, int);
 //key is 256 bits
 //iv is 128 bits
 

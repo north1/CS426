@@ -1,17 +1,25 @@
 #include "createlog.h"
 
-void tCreatelog(struct Mi Mo) { 
-    //todo t's stuff in createlog
+void tCreatelog(struct Mi Mo, unsigned char * iv) { 
+    int Xo_len; 
+    struct Xi *Xo = (struct Xi *)decryptAES(Mo.EkXi, Mo.EkXi_len, Mo.ksession, iv, &Xo_len);
+    printf("T: ksession is:\n");
+    print(Mo.ksession, 32);
+    printf("T: time of log is %i\n", (int)(Xo->d));
+    //returns X1 = p, IDlog,hash(Xo)
 }
 
 void createlog(char *logname) { 
     initOpenSSL();
+
     unsigned char * ksession = random256(); 
+    printf("U: ksession is:\n");
+    print(ksession, 32);
     unsigned char * iv = random128();
     time_t d = time(NULL); 
-    unsigned char id = logfileNum; 
+    unsigned char id = ++logfileNum; 
+    printf("U: time of log is %i\n", (int)d);
     unsigned char *Ao = random160();
-    logfileNum++; 
     struct Xi xo;
     xo.p = pnonce; 
     xo.d = d; 
@@ -22,6 +30,12 @@ void createlog(char *logname) {
     int EkXi_len;
     unsigned char *EkXi = encryptAES((unsigned char *)&xo, sizeof(struct Xi),
             ksession, iv, &EkXi_len); 
+  
+    {
+    int Xo_len;
+    struct Xi *Xo = (struct Xi *)decryptAES(EkXi, EkXi_len, ksession, iv, &Xo_len);
+    printf("T: time of log is %i\n", (int)(Xo->d));
+    }
 
     struct Mi Mo; 
     Mo.p = p; 
@@ -29,7 +43,7 @@ void createlog(char *logname) {
     ustrncpy(Mo.EkXi, EkXi, EkXi_len);
     Mo.EkXi_len = EkXi_len; 
 
-    tCreatelog(Mo); 
+    tCreatelog(Mo, iv); 
 
     struct Li log; 
     log.W = logfileInitType; 

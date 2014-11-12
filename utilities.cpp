@@ -151,6 +151,13 @@ unsigned char * decryptAES(unsigned char *ciphertext, int ciphertext_len,
   return plaintext; 
 }
 
+void print(unsigned char *vals, int count) { 
+    for(int i = 0; i < count; i++) { 
+        printf("%i ",(int)(vals[i]));
+    }
+    printf("\n"); 
+}
+
 
 /**
  * "Message Authentication Code" i.e. a keyed hash function used for message authentication, which is based on a hash function.
