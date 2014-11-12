@@ -14,6 +14,7 @@ void initOpenSSL();
 //key is 256 bits
 //iv is 128 bits
 
+void ustrncpy(unsigned char *, unsigned char *, int);
 int encrypt(unsigned char *plaintext, int plaintext_len, unsigned char *key,
   unsigned char *iv, unsigned char *ciphertext);
 int decrypt(unsigned char *ciphertext, int ciphertext_len, unsigned char *key,

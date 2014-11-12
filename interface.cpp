@@ -1,6 +1,15 @@
 #include "auditlog.h"
 
+unsigned char logfileNum;
+int pnonce; 
+int logfileInitType;
+int responseMessageType;
 int main() {
+    logfileNum = 1; 
+    pnonce = 1; 
+    logfileInitType = 0;
+    responseMessageType = 1;
+    
 	size_t bufSize = 100*sizeof(char);
 	char *inputLine, *cmd, *arg, *arg2;
 	inputLine = (char*)malloc(bufSize); //arbitrary size
@@ -24,8 +33,8 @@ int main() {
 			arg = strtok(NULL, " \n");
 			printf("Command: createlog\n");
 			printf("Argument: %s\n", arg);
-		//createlog(arg); 
-            	pnonce++;
+		    createlog(arg); 
+            pnonce++;
 		}
 
 		else if (strcmp(cmd, "add") == 0) {

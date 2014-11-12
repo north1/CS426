@@ -4,6 +4,9 @@
 
 int main(int argc, char**argv) { 
     initOpenSSL();
+    
+    printf("sizeof(time_t)=%i\n", (int)sizeof(time_t));
+
     unsigned char *key = random256(); 
     unsigned char *iv = random128(); 
     const char *plain = "please work, please work, please work, yes, please work, yes work!";

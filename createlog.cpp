@@ -1,8 +1,11 @@
-#include "auditlog.h"
+#include "createlog.h"
+
+void tCreatelog(struct Mi Mo) { 
+    //todo t's stuff in createlog
+}
 
 void createlog(char *logname) { 
     initOpenSSL();
-    struct log * log = (struct log *)malloc(sizeof(struct log));
     unsigned char * ksession = random256(); 
     unsigned char * iv = random128();
     time_t d = time(NULL); 
@@ -10,21 +13,21 @@ void createlog(char *logname) {
     unsigned char *Ao = random160();
     logfileNum++; 
     struct Xi xo;
-    xo.p = p; 
+    xo.p = pnonce; 
     xo.d = d; 
-    strncpy(xo.Ao, Ao, 20);
+    ustrncpy(xo.Ao, Ao, 20);
 
     int p = pnonce;
 
-    int EkMo_len;
-    unsigned char *EkMo = encryptAES((unsigned char *)&xo, sizeof(struct Xi),
-            ksession, iv, &EkMo_len); 
+    int EkXi_len;
+    unsigned char *EkXi = encryptAES((unsigned char *)&xo, sizeof(struct Xi),
+            ksession, iv, &EkXi_len); 
 
     struct Mi Mo; 
     Mo.p = p; 
-    Mo.ksession = ksession; 
-    Mo.EkMo = EkMo; 
-    Mo.EkMo_len = EkMo_len; 
+    ustrncpy(Mo.ksession, ksession, 32);
+    ustrncpy(Mo.EkXi, EkXi, EkXi_len);
+    Mo.EkXi_len = EkXi_len; 
 
     tCreatelog(Mo); 
 
@@ -34,21 +37,25 @@ void createlog(char *logname) {
     D.d = d; 
     D.id = id; 
     D.Mi = Mo; 
-    log.EkD = encryptAES((unsigned char *)&D, sizeof(struct Dj), 
-            ksession, iv, &(log.EkD_len));
+    unsigned char *EkDj = encryptAES((unsigned char *)&D, sizeof(struct Dj), 
+            ksession, iv, &(log.EkDj_len));
+    ustrncpy(log.EkDj, EkDj, log.EkDj_len);
     unsigned char YminusOne [] = {
         (unsigned char)0,(unsigned char)0,(unsigned char)0,(unsigned char)0,(unsigned char)0,
         (unsigned char)0,(unsigned char)0,(unsigned char)0,(unsigned char)0,(unsigned char)0,
         (unsigned char)0,(unsigned char)0,(unsigned char)0,(unsigned char)0,(unsigned char)0,
         (unsigned char)0,(unsigned char)0,(unsigned char)0,(unsigned char)0,(unsigned char)0}; 
     struct YhashInput in;
-    in.YminusOne = YminusOne; 
-    in.EkD = log.EkD; 
-    in
-    log.Y = hash(W
+    for(int i = 0; i < sizeof(struct YhashInput); i++) { 
+        ((unsigned char *)&in)[i] = '\0'; 
+    }
+    ustrncpy(in.YminusOne, YminusOne, 20);
+    ustrncpy(in.EkDj, log.EkDj, log.EkDj_len);
+    in.W = log.W; 
+    SHA1((unsigned char *)&in, sizeof(struct YhashInput), log.Y);
 
+    FILE *file_ptr = fopen(logname,"wb");
+    fwrite(&log, sizeof(struct Li), 1, file_ptr);
+    fclose(file_ptr);
 }
 
-void tCreatelog(struct Mi Mo) { 
-    //todo t's stuff in createlog
-}

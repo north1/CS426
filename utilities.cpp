@@ -24,6 +24,11 @@ unsigned char * random256() {
 	return ret;
 }
 
+void ustrncpy(unsigned char *dest, unsigned char *src, int n) { 
+    for(int i = 0; i<n; i++) { 
+        dest[i] = src[i]; 
+    }
+}
 
 void initOpenSSL() { 
   /* Initialise the library */
