@@ -28,15 +28,9 @@ void createlog(char *logname) {
     int p = pnonce;
 
     int EkXi_len;
-    unsigned char *EkXi = encryptAES((unsigned char *)&xo, sizeof(struct Xi),
+    unsigned char *EkXi = encryptAES((unsigned char *)&xo, (int)sizeof(struct Xi),
             ksession, iv, &EkXi_len); 
   
-    {
-    int Xo_len;
-    struct Xi *Xo = (struct Xi *)decryptAES(EkXi, EkXi_len, ksession, iv, &Xo_len);
-    printf("T: time of log is %i\n", (int)(Xo->d));
-    }
-
     struct Mi Mo; 
     Mo.p = p; 
     ustrncpy(Mo.ksession, ksession, 32);

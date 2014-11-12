@@ -97,7 +97,7 @@ unsigned char * encryptAES(unsigned char *plaintext, int plaintext_len, unsigned
   unsigned char * ciphertext = (unsigned char *)malloc(plaintext_len+AES_BLOCK_SIZE-1);
 
   /* Encrypt the plaintext */
-  *ciphertext_len = encrypt(plaintext, strlen((char *)plaintext), key, iv,
+  *ciphertext_len = encrypt(plaintext, plaintext_len, key, iv,
     ciphertext);
   
   return ciphertext;

@@ -24,4 +24,4 @@ utilities.o: utilities.cpp
 
 
 clean:
-	rm -f *.o interface testUtil
+	rm -f *.o interface testUtil *.log
