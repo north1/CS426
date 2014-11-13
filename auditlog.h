@@ -14,10 +14,10 @@ extern unsigned char logfileNum;
 extern int logfileInitType; 
 extern int responseMessageType; 
 extern int pnonce; 
-extern unsigned char *Ao;
-extern unsigned char *Aj;
+extern unsigned char Ao[20];
+extern unsigned char Aj[20];
 extern unsigned char *logFileName;
-extern int logFileNameLen;
+extern unsigned int logFileNameLen;
 extern unsigned char iv[16]; 
 
 struct Xi { 

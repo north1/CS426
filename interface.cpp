@@ -4,14 +4,11 @@ unsigned char logfileNum;
 int pnonce; 
 int logfileInitType;
 int responseMessageType;
-<<<<<<< HEAD
 unsigned char Ao[20]; 
 unsigned char Aj[20];
 unsigned char * logFileName;
 unsigned int logFileNameLen;
-=======
 unsigned char iv [16];
->>>>>>> be0f8b049850bf18386d1c53bc2ea72e81a8b940
 int main() {
     ustrncpy(iv, random128(), 16); 
     logfileNum = 1; 
