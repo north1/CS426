@@ -34,6 +34,10 @@ void add(unsigned char* message_string, int len) {
 	seed->W = W;
 	ustrncpy(seed->A, Aj, 20);
 	SHA1((unsigned char *)seed, 20, key);
+    printf("\n\n");
+    print(key, 20);
+    printf("\n%i", W);
+    printf("\n\n");
 	
 	//Encrypt (with Keyj) the message_string, Dj
 	int EkD_len = len + AES_BLOCK_SIZE;

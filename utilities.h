@@ -9,6 +9,7 @@
 #include <openssl/sha.h>
 #include <openssl/hmac.h>
 #include <string.h>
+#include "auditlog.h"
 
 unsigned char * random128();
 unsigned char * random160();

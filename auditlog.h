@@ -15,7 +15,6 @@
 
 //Author: Caleb Rouleau {
 extern unsigned char logfileNum;
-extern int logfileInitType; 
 extern int responseMessageType; 
 extern int pnonce; 
 extern unsigned char Ao[20];
@@ -43,7 +42,7 @@ struct Li {
 //used for Yj=H(Yj-1, Ekj(Dj), Wj)
 struct YhashInput { 
     unsigned char YminusOne[20]; 
-    unsigned char EkDj[sizeof(Dj)+AES_BLOCK_SIZE]; 
+    unsigned char EkDj[500]; 
     unsigned char W; 
 };
 //} end Author Caleb Rouleau

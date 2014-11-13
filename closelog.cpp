@@ -9,7 +9,7 @@ void closelog() {
 	//ustrncpy(outmessage, (unsigned char *)message, strlen(message));
 	//ustrncpy(outmessage+strlen(message), (unsigned char *)&t, sizeof(time_t)); 
 
-	add(message, strlen(message));
+	add((unsigned char *)message, strlen(message));
 
 	unsigned char clear[] = {
         (unsigned char)0,(unsigned char)0,(unsigned char)0,(unsigned char)0,(unsigned char)0,

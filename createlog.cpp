@@ -17,7 +17,7 @@ void createlog(char *logname) {
     ustrncpy(Aj, Ao, 20);
 
     struct Li log; 
-    log.W = logfileInitType; 
+    log.W = 0; 
     char message [] = "LogFileInitialization";
     unsigned char *EkDj = encryptAES((unsigned char *)message, strlen(message), 
             ksession, iv, &(log.EkDj_len));

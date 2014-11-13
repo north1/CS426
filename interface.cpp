@@ -3,7 +3,6 @@
 
 unsigned char logfileNum;
 int pnonce; 
-int logfileInitType;
 int responseMessageType;
 unsigned char Ao[20]; 
 unsigned char Aj[20];
@@ -17,7 +16,6 @@ int main() {
     ustrncpy(iv, random128(), 16); 
     logfileNum = 1; 
     pnonce = 1; 
-    logfileInitType = 0;
     responseMessageType = 1;
 	logFileOpen = false;
     
@@ -69,6 +67,7 @@ int main() {
 			arg = strtok(NULL, " \n");
 			printf("Command: verify\n");
 			printf("Argument: %s\n", arg);
+
 		}
 
 		else if (strcmp(cmd, "verifyall") == 0) {
@@ -77,6 +76,7 @@ int main() {
 			printf("Command: verifyall\n");
 			printf("Argument 1: %s\n", arg);
 			printf("Argument 2: %s\n", arg2);
+            verifyall(arg, arg2);
 		}
 
 		else {
