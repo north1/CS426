@@ -5,6 +5,7 @@
 #include <openssl/err.h>
 #include <openssl/aes.h>
 #include <openssl/sha.h>
+#include <openssl/hmac.h>
 #include <string.h>
 
 unsigned char * random128();
@@ -24,4 +25,4 @@ unsigned char * encryptAES(unsigned char* plaintext, int plaintext_len,
         unsigned char* key, unsigned char* iv, int *ciphertext_len);
 unsigned char * decryptAES(unsigned char* ciphertext, int ciphertext_len, 
         unsigned char* key, unsigned char* iv, int *plaintext_len);
-
+unsigned char * MAC(unsigned char * key, unsigned char * data, int data_len);
