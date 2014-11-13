@@ -184,19 +184,18 @@ unsigned char * MAC(unsigned char * key, unsigned char * data, int data_len) {
 	return digest;
 }
 
-unsigned char * getMessageFromLog(struct Li * log, unsigned char A[20]) {
+unsigned char * getMessageFromLog(struct Li * log, unsigned char *Aj, int *plaintext_len) {
 	//get the cipertext
 	unsigned char * ciphertext = log->EkDj;
 	int ciphertext_len = log->EkDj_len;
 
 	//get the key
-	unsigned char * key = (unsigned char *) malloc(20);
-	struct keySeed * seed = (struct keySeed *)malloc(sizeof(struct keySeed));
-	seed->W = W;
+	unsigned char key[20];
+	struct keySeed seed;
+	seed->W = log->W;
 	ustrncpy(seed->A, Aj, 20);
 	SHA1((unsigned char *)seed, 20, key);
 	
 	//decrypt the ciphertext
-	int plaintext_len;
-	return decryptAES(ciphertext, ciphertext_len, key, iv, &plaintext_len);
+	return decryptAES(ciphertext, ciphertext_len, key, iv, plaintext_len);
 }
