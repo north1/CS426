@@ -1,19 +1,17 @@
-#include "auditlog.h"
+#include "verifyall.h"
 
-
-
-void verifyall(char * log-file-name, char * out-file-name) {
+void verifyall(char * log_file_name, char * out_file_name) {
 	//open the logfile for reading
-	FILE * logFile = fopen(log-file-name, "rb");
+	FILE * logFile = fopen(log_file_name, "rb");
 	if (!logFile) {
-		printf("The log named \"%s\" could not be opened. Perhaps it does not exist?\n", log-file-name);
+		printf("The log named \"%s\" could not be opened. Perhaps it does not exist?\n", log_file_name);
 		return;
 	}
 
 	//open the outfile for writing
-	FILE * outFile = fopen(out-file-name, "wb");
+	FILE * outFile = fopen(out_file_name, "wb");
 	if (!outFile) {
-		printf("The out file named \"%s\" could not be opened.\n", out-file-name);
+		printf("The out file named \"%s\" could not be opened.\n", out_file_name);
 		return;
 	}
 
