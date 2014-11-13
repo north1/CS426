@@ -73,9 +73,13 @@ void createlog(char *logname) {
     fwrite(&log, sizeof(struct Li), 1, file_ptr);
     fclose(file_ptr);
 }
-/*
+
 void createlog2(char *logname) {
+	//store the logFileName in a global
 	logFileName = (char*) malloc(strlen(logname));
-	
+	strncpy(logFileName, logname, strlen(logname));	
+
+	//form the first log entry
+	struct Li * firstLog = 
 }
-*/
+
