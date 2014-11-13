@@ -18,6 +18,7 @@ extern unsigned char *Ao;
 extern unsigned char *Aj;
 extern unsigned char *logFileName;
 extern int logFileNameLen;
+extern unsigned char iv[16]; 
 
 struct Xi { 
     unsigned char p; 
