@@ -12,6 +12,7 @@
 #include "add.h"
 #include "closelog.h"
 
+//Author: Caleb Rouleau {
 extern unsigned char logfileNum;
 extern int logfileInitType; 
 extern int responseMessageType; 
@@ -57,6 +58,9 @@ struct YhashInput {
     unsigned char EkDj[sizeof(Dj)+AES_BLOCK_SIZE]; 
     unsigned char W; 
 };
+//} end Author Caleb Rouleau
+
+//Author: Mike North {
 
 //used for Kj = H(Wj, Aj)
 struct keySeed {
@@ -68,4 +72,5 @@ struct keySeed {
 
 unsigned char * random128();
 unsigned char * random256();
+//} end Author Mike North
 #endif

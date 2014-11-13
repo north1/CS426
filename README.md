@@ -1,3 +1,4 @@
+Author: Mike North
 CS426
 =====
 

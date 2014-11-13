@@ -1,5 +1,6 @@
 #include "createlog.h"
 
+//Author: Caleb Rouleau
 void tCreatelog(struct Mi Mo, unsigned char * iv) { 
     //stores Ko for verification purposes later. 
     ustrncpy(Ko, Mo.ksession, 20);
@@ -13,6 +14,7 @@ void tCreatelog(struct Mi Mo, unsigned char * iv) {
     */
 }
 
+//Author: Caleb Rouleau
 void createlog(char *logname) { 
     initOpenSSL();
 
@@ -78,14 +80,4 @@ void createlog(char *logname) {
     fclose(file_ptr);
 	logFileOpen = true;
 }
-/*
-void createlog2(char *logname) {
-	//store the logFileName in a global
-	logFileName = (char*) malloc(strlen(logname));
-	strncpy(logFileName, logname, strlen(logname));	
-
-	//form the first log entry
-	struct Li * firstLog = 
-}
-*/
 

@@ -1,3 +1,4 @@
+//Author mostly Mike North and some Caleb Rouleau bug fixes
 #include "auditlog.h"
 
 unsigned char logfileNum;
@@ -51,6 +52,10 @@ int main() {
 			arg = strtok(NULL, " \n");
 			printf("Command: add\n");
 			printf("Argument: %s\n", arg);
+            int msgLen = strlen(arg); 
+            if(msgLen > 450) { 
+                arg[450] = '\0'; 
+            }
 			add((unsigned char *) arg, strlen(arg));
 		}
 

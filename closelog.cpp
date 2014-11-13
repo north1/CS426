@@ -1,6 +1,5 @@
+//Author: Caleb Rouleau and Mike North
 #include "closelog.h"
-
-	
 
 void closelog() {
 	char  message [] = "NormalCloseMessage";	

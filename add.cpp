@@ -1,6 +1,6 @@
 #include "auditlog.h"
 
-
+//Author: Pair programming Mike North, Caleb Rouleau
 void add(unsigned char* message_string, int len) {
 
 	if (!logFileOpen) {
@@ -75,8 +75,6 @@ void add(unsigned char* message_string, int len) {
 //	fseek(logFile, 0, SEEK_END);
     fwrite(&log, sizeof(struct Li), 1, logFile);
     fclose(logFile);
-
-	
 
 	return;
 }

@@ -1,5 +1,6 @@
 #include "utilities.h"
 
+//Author Mike North
 unsigned char * random128() {
 	unsigned char * ret = (unsigned char*) malloc(16); //16 bytes = 128 bits
 	for (int i = 0; i < 16; i++) {
@@ -8,6 +9,7 @@ unsigned char * random128() {
 	return ret;
 }
 
+//author Caleb Rouleau
 unsigned char * random160() {
 	unsigned char * ret = (unsigned char*) malloc(20); //16 bytes = 128 bits
 	for (int i = 0; i < 20; i++) {
@@ -16,6 +18,7 @@ unsigned char * random160() {
 	return ret;
 }
 
+//Author Mike North
 unsigned char * random256() {
 	unsigned char * ret = (unsigned char *) malloc(32); //32 bytes = 256 bits
 	for (int i = 0; i < 32; i++) {
@@ -24,12 +27,14 @@ unsigned char * random256() {
 	return ret;
 }
 
+//Author Caleb Rouleau
 void ustrncpy(unsigned char *dest, unsigned char *src, int n) { 
     for(int i = 0; i<n; i++) { 
         dest[i] = src[i]; 
     }
 }
 
+//Author: taken from internet http://wiki.openssl.org/index.php/EVP_Symmetric_Encryption_and_Decryption
 void initOpenSSL() { 
   /* Initialise the library */
   ERR_load_crypto_strings();
@@ -37,12 +42,14 @@ void initOpenSSL() {
   OPENSSL_config(NULL);
 }
 
+//Author: taken from internet http://wiki.openssl.org/index.php/EVP_Symmetric_Encryption_and_Decryption
 void handleErrors(void)
 {
     ERR_print_errors_fp(stderr);
     abort();
 }
 
+//Author: taken from internet http://wiki.openssl.org/index.php/EVP_Symmetric_Encryption_and_Decryption
 int encrypt(unsigned char *plaintext, int plaintext_len, unsigned char *key,
   unsigned char *iv, unsigned char *ciphertext)
 {
@@ -82,6 +89,7 @@ int encrypt(unsigned char *plaintext, int plaintext_len, unsigned char *key,
   return ciphertext_len;
 }
 
+
 unsigned char * encryptAES(unsigned char *plaintext, int plaintext_len, unsigned char *key, unsigned char *iv, int*ciphertext_len) { 
   /* Set up the key and iv. Do I need to say to not hard code these in a
    * real application? :-)
@@ -104,6 +112,7 @@ unsigned char * encryptAES(unsigned char *plaintext, int plaintext_len, unsigned
 
 }
 
+//Author: taken from internet http://wiki.openssl.org/index.php/EVP_Symmetric_Encryption_and_Decryption
 int decrypt(unsigned char *ciphertext, int ciphertext_len, unsigned char *key,
   unsigned char *iv, unsigned char *plaintext)
 {
@@ -143,6 +152,7 @@ int decrypt(unsigned char *ciphertext, int ciphertext_len, unsigned char *key,
   return plaintext_len;
 }
 
+//Author Caleb Rouleau
 unsigned char * decryptAES(unsigned char *ciphertext, int ciphertext_len,
         unsigned char *key, unsigned char *iv, int*plaintext_len) { 
   unsigned char * plaintext = (unsigned char *)malloc(ciphertext_len+AES_BLOCK_SIZE-1);
@@ -151,6 +161,7 @@ unsigned char * decryptAES(unsigned char *ciphertext, int ciphertext_len,
   return plaintext; 
 }
 
+//Author Caleb Rouleau
 void print(unsigned char *vals, int count) { 
     for(int i = 0; i < count; i++) { 
         printf("%i ",(int)(vals[i]));
@@ -165,6 +176,7 @@ void print(unsigned char *vals, int count) {
  * Sort of unnecessary since we're just wrapping HMAC, but fewer args this way.
  */
 
+//Author: Mike North with Caleb Rouleau bug fixes
 unsigned char * MAC(unsigned char * key, unsigned char * data, int data_len) {
 	unsigned char * digest;
 	digest = HMAC(EVP_sha1(), key, 20, data, data_len, NULL, NULL);
