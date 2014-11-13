@@ -14,6 +14,10 @@ extern unsigned char logfileNum;
 extern int logfileInitType; 
 extern int responseMessageType; 
 extern int pnonce; 
+extern unsigned char *Ao;
+extern unsigned char *Aj;
+extern unsigned char *logFileName;
+extern int logFileNameLen;
 
 struct Xi { 
     unsigned char p; 
@@ -39,22 +43,20 @@ struct Li {
     unsigned char EkDj[sizeof(Dj)+AES_BLOCK_SIZE];
     int EkDj_len;
     unsigned char Y[20]; //20 because that's the size of sha1 hash output
-    //removed Z because unneeded
+    unsigned char Z[20];
 };
 
+//used for Yj=H(Yj-1, Ekj(Dj), Wj)
 struct YhashInput { 
     unsigned char YminusOne[20]; 
     unsigned char EkDj[sizeof(Dj)+AES_BLOCK_SIZE]; 
     unsigned char W; 
 };
 
-struct entry {
-	int W; //entry type, possibly unnecessary, subject to change
-	unsigned char * EkD; //arbitrary size, may change?
-	int EkD_len;
-	unsigned char * Y; //note: initial entry should have hashChain of all zeros
-	int Y_len;
-	unsigned char * Z; //= MAC_Aj(hashChain) -- definitely subject to change since I have no goddamn idea what MAC is
+//used for Kj = H(Wj, Aj)
+struct keySeed {
+	int W;
+	unsigned char A[20];
 };
 
 //int abnormalCloseType = 2; never happens because timeouts can't happen (TA is cool with this)

@@ -4,6 +4,10 @@ unsigned char logfileNum;
 int pnonce; 
 int logfileInitType;
 int responseMessageType;
+unsigned char Ao[20]; 
+unsigned char Aj[20];
+unsigned char * logFileName;
+unsigned int logFileNameLen;
 int main() {
     logfileNum = 1; 
     pnonce = 1; 

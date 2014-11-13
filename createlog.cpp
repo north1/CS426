@@ -66,4 +66,9 @@ void createlog(char *logname) {
     fwrite(&log, sizeof(struct Li), 1, file_ptr);
     fclose(file_ptr);
 }
-
+/*
+void createlog2(char *logname) {
+	logFileName = (char*) malloc(strlen(logname));
+	
+}
+*/
