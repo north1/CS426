@@ -170,4 +170,21 @@ unsigned char * MAC(unsigned char * key, unsigned char * data, int data_len) {
 	digest = HMAC(EVP_sha1(), key, 20, data, data_len, NULL, NULL);
 	//TODO: NOTE: TEST HERE!! It is possible that SHA1 is returning bytes as hex in char, meaning double length (and less random?)
 	return digest;
-} 
+}
+
+unsigned char * getMessageFromLog(struct Li * log, unsigned char A[20]) {
+	//get the cipertext
+	unsigned char * ciphertext = log->EkDj;
+	int ciphertext_len = log->EkDj_len;
+
+	//get the key
+	unsigned char * key = (unsigned char *) malloc(20);
+	struct keySeed * seed = (struct keySeed *)malloc(sizeof(struct keySeed));
+	seed->W = W;
+	ustrncpy(seed->A, Aj, 20);
+	SHA1((unsigned char *)seed, 20, key);
+	
+	//decrypt the ciphertext
+	int plaintext_len;
+	return decryptAES(ciphertext, ciphertext_len, key, iv, &plaintext_len);
+}

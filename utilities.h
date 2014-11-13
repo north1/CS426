@@ -26,3 +26,4 @@ unsigned char * encryptAES(unsigned char* plaintext, int plaintext_len,
 unsigned char * decryptAES(unsigned char* ciphertext, int ciphertext_len, 
         unsigned char* key, unsigned char* iv, int *plaintext_len);
 unsigned char * MAC(unsigned char * key, unsigned char * data, int data_len);
+unsigned char * getMessageFromLog(struct Li * log, unsigned charA[20]);
