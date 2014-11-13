@@ -12,7 +12,7 @@ void add(unsigned char* message_string, int len) {
 	//If it is open, store the file pointer in logFile	
 	FILE * logFile = fopen(logFileName, "rb");
 	if (!logFile) {
-		printf("The log named \"%s\" could not be opened.\nPerhaps it does not exist?\n", logFileName);
+		printf("The log named \"%s\" could not be opened.\n", logFileName);
 		return;
 	}
 

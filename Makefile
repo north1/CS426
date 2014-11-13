@@ -13,11 +13,11 @@ testUtil.o: testUtil.cpp auditlog.h
 	$(CC) $(CFLAGS) -c testUtil.cpp
 
 #Author: Mike North
-interface: interface.o utilities.o createlog.o add.o closelog.o
-	$(CC) $(CFLAGS) -o interface interface.o utilities.o createlog.o add.o closelog.o -lssl -lcrypto
+interface: interface.o utilities.o createlog.o add.o closelog.o verifyall.o
+	$(CC) $(CFLAGS) -o interface interface.o utilities.o createlog.o add.o closelog.o verifyall.o -lssl -lcrypto
 
 #Author: Caleb Rouleau
-interface.o: interface.cpp auditlog.h createlog.h closelog.h
+interface.o: interface.cpp auditlog.h createlog.h closelog.h verifyall.h
 	$(CC) $(CFLAGS) -c interface.cpp
 
 #Author: Caleb Rouleau
@@ -31,6 +31,9 @@ add.o: add.cpp
 #Author: Caleb Rouleau
 closelog.o: closelog.cpp
 	$(CC) $(CFLAGS) -c closelog.cpp
+
+verifyall.o: verifyall.cpp
+	$(CC) $(CFLAGS) -c verifyall.cpp
 
 #Author: Caleb Rouleau
 utilities.o: utilities.cpp

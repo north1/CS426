@@ -11,6 +11,7 @@
 #include "createlog.h"
 #include "add.h"
 #include "closelog.h"
+#include "verifyall.h"
 
 //Author: Caleb Rouleau {
 extern unsigned char logfileNum;

@@ -1,4 +1,4 @@
-#include "verifyall.h"
+#include "auditlog.h"
 
 void verifyall(char * log_file_name, char * out_file_name) {
 	//open the logfile for reading
@@ -54,18 +54,39 @@ void verifyall(char * log_file_name, char * out_file_name) {
 			ustrncpy(yInput.EkDj, Lcurr.EkDj, Lcurr.EkD_len);
 			yInput.W = Lcurr.curr;
 			SHA1((unsigned char *)yInput, sizeof(struct YhashInput), correctY);
-			
+			if (!ustrnequ(Lcurr.Y, correctY, 20)) {
+				printf("Failed verification.\n");
+				fflush();
+				return;
+			}
 
 			//check that Lcurr.Z = MAC(Acurr, Lcurr.Y)
-
+			unsigned char correctZ[20];
+			ustrncpy(correctZ, MAC(Acurr, Lcurr.Y, 20), 20);
+			if (!ustrnequ(Lcurr.Z, correctZ, 20)) {
+				printf("Failed verification.\n");
+				fflush();
+				return;
+			}
 			
 			//if we're here, log is valid so far. if we've also found the file is closed, write to out
-
+			if (isClosed) {
+				int plaintext_len;
+				char * message = (char *)getMessageFromLog(&Lcurr, Acurr, &plaintext_len);
+				for (int i = 0; i < plaintext_len; i++) {
+					fputc(message[i], outFile);
+				}
+			}
 
 			//set Lprev to Lcurr for the next iteration
-
+			ustrncpy((unsigned char *)Lprev, (unsigned char *)Lcurr, sizeof(struct Li));
 		}
-		//check if the last entry's message is a valid 
+		//check if the last entry's message is a valid closelog
+		int plaintext_len;
+		char message[] = (char[])getMessageFromLog(&Lprev, Acurr, &plaintext_len);
+		if (strcmp(message, "NormalCloseMessage") == 0) {
+			isClosed = true;
+		}
 	}
 
 	return;
