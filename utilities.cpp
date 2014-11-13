@@ -199,3 +199,12 @@ unsigned char * getMessageFromLog(struct Li * log, unsigned char *Aj, int *plain
 	//decrypt the ciphertext
 	return decryptAES(ciphertext, ciphertext_len, key, iv, plaintext_len);
 }
+
+bool ustrnequ(unsigned char * a, unsigned char *b, int l) { 
+    for(int i = 0; i < l; i++) { 
+        if(a[i] != b[i]) { 
+            return false; 
+        }
+    }
+    return true; 
+}
