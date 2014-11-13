@@ -31,19 +31,6 @@ struct Xi {
     unsigned char Ao [20];
 }; //Xi has length 1+8+20=29
 
-struct Mi { 
-    unsigned char p; 
-    unsigned char ksession [32]; 
-    unsigned char EkXi[sizeof(struct Xi)+AES_BLOCK_SIZE];
-    int EkXi_len;
-};
-
-struct Dj { 
-    time_t d; 
-    unsigned char id; 
-    struct Mi Mi;
-};
-
 struct Li { 
     int W;
     unsigned char EkDj[500];
