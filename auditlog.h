@@ -46,7 +46,7 @@ struct Dj {
 
 struct Li { 
     int W;
-    unsigned char EkDj[sizeof(Dj)+AES_BLOCK_SIZE];
+    unsigned char EkDj[500];
     int EkDj_len;
     unsigned char Y[20]; //20 because that's the size of sha1 hash output
     unsigned char Z[20];
