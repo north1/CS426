@@ -1,20 +1,16 @@
 #include "createlog.h"
 
 void tCreatelog(struct Mi Mo, unsigned char * iv) { 
+    //stores Ko for verification purposes later. 
+    ustrncpy(Ko, Mo.ksession, 20);
+    /*
     //returns M1 = p, K1
     int Xo_len; 
     struct Xi *Xo = (struct Xi *)decryptAES(Mo.EkXi, Mo.EkXi_len, Mo.ksession, iv, &Xo_len);
     printf("T: ksession is:\n");
     print(Mo.ksession, 32);
     printf("T: time of log is %i\n", (int)(Xo->d));
-    //returns X1 = p, IDlog,hash(Xo)
-    
-    //X1 = p,IDlog,hash(Xo) 
-    struct Xi X1; 
-    X1.p = Xo->p; 
-    //X1.d = 
-
-    
+    */
 }
 
 void createlog(char *logname) { 

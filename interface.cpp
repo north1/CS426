@@ -10,6 +10,8 @@ char * logFileName;
 unsigned int logFileNameLen;
 unsigned char iv [16];
 bool logFileOpen;
+unsigned char Ko[20];
+
 int main() {
     ustrncpy(iv, random128(), 16); 
     logfileNum = 1; 
