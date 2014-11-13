@@ -9,6 +9,8 @@
 #include <openssl/evp.h>
 #include "utilities.h"
 #include "createlog.h"
+#include "add.h"
+#include "closelog.h"
 
 extern unsigned char logfileNum;
 extern int logfileInitType; 
@@ -16,9 +18,10 @@ extern int responseMessageType;
 extern int pnonce; 
 extern unsigned char Ao[20];
 extern unsigned char Aj[20];
-extern unsigned char *logFileName;
+extern char *logFileName;
 extern unsigned int logFileNameLen;
 extern unsigned char iv[16]; 
+extern bool logFileOpen;
 
 struct Xi { 
     unsigned char p; 

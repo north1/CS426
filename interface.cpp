@@ -6,15 +6,17 @@ int logfileInitType;
 int responseMessageType;
 unsigned char Ao[20]; 
 unsigned char Aj[20];
-unsigned char * logFileName;
+char * logFileName;
 unsigned int logFileNameLen;
 unsigned char iv [16];
+bool logFileOpen;
 int main() {
     ustrncpy(iv, random128(), 16); 
     logfileNum = 1; 
     pnonce = 1; 
     logfileInitType = 0;
     responseMessageType = 1;
+	logFileOpen = false;
     
 	size_t bufSize = 100*sizeof(char);
 	char *inputLine, *cmd, *arg, *arg2;
@@ -47,11 +49,13 @@ int main() {
 			arg = strtok(NULL, " \n");
 			printf("Command: add\n");
 			printf("Argument: %s\n", arg);
+			add((unsigned char *) arg, strlen(arg));
 		}
 
 
 		else if (strcmp(cmd, "closelog") == 0) {
 			printf("Command: closelog\n");
+			closelog();
 		}
 
 		else if (strcmp(cmd, "verify") == 0) {

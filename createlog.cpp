@@ -20,6 +20,9 @@ void tCreatelog(struct Mi Mo, unsigned char * iv) {
 void createlog(char *logname) { 
     initOpenSSL();
 
+	logFileName = (char*) malloc(strlen(logname));
+	strncpy(logFileName, logname, strlen(logname));	
+
     unsigned char * ksession = random256(); 
     printf("U: ksession is:\n");
     print(ksession, 32);
@@ -69,11 +72,17 @@ void createlog(char *logname) {
     in.W = log.W; 
     SHA1((unsigned char *)&in, sizeof(struct YhashInput), log.Y);
 
+	//print((unsigned char *)&log, sizeof(struct Li));
     FILE *file_ptr = fopen(logname,"wb");
+	if (!file_ptr) {
+		printf("The log named \"%s\" could not be opened.\n", logFileName);
+		return;
+	}	
     fwrite(&log, sizeof(struct Li), 1, file_ptr);
     fclose(file_ptr);
+	logFileOpen = true;
 }
-
+/*
 void createlog2(char *logname) {
 	//store the logFileName in a global
 	logFileName = (char*) malloc(strlen(logname));
@@ -82,4 +91,5 @@ void createlog2(char *logname) {
 	//form the first log entry
 	struct Li * firstLog = 
 }
+*/
 
