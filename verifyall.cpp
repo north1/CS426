@@ -1,4 +1,4 @@
-#include "auditlog.h"
+#include "verifyall.h"
 
 void verifyall(char * log_file_name, char * out_file_name) {
 	//open the logfile for reading

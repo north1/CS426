@@ -56,6 +56,10 @@ int main() {
 			arg = strtok(NULL, " \n");
 			printf("Command: createlog\n");
 			printf("Argument: %s\n", arg);
+            if(arg == NULL) { 
+                printf("invalid command!\n");
+                continue;
+            }
 		    createlog(arg); 
             pnonce++;
 		}
@@ -81,7 +85,13 @@ int main() {
 			arg = strtok(NULL, " \n");
 			printf("Command: verify\n");
 			printf("Argument: %s\n", arg);
-
+            if(arg == NULL) { 
+                printf("invalid command!\n");
+                continue;
+            }
+            int entry = atoi(arg);
+            printf("entry is %i\n", entry);
+            verify(entry);
 		}
 
 		else if (strcmp(cmd, "verifyall") == 0) {
