@@ -24,7 +24,8 @@ extern char *logFileName;
 extern unsigned int logFileNameLen;
 extern unsigned char iv[16]; 
 extern bool logFileOpen;
-extern unsigned char Ko[20];
+extern unsigned char originalKey[32];
+
 
 extern struct Xi emXi;
 extern struct Li emLi;

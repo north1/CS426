@@ -1,21 +1,6 @@
 #include "createlog.h"
 
-//Author: Caleb Rouleau
-void createlog(char *logname) { 
-    initOpenSSL();
-
-	logFileName = (char*) calloc(1,strlen(logname));
-	strncpy(logFileName, logname, strlen(logname));	
-
-    unsigned char * ksession = random256(); 
-    printf("U: ksession is:\n");
-    print(ksession, 32);
-    time_t d = time(NULL); 
-    unsigned char id = ++logfileNum; 
-    printf("U: time of log is %i\n", (int)d);
-    ustrncpy(Ao, random160(), 20);
-    ustrncpy(Aj, Ao, 20);
-
+struct Li createlogDeterministic(unsigned char *ksession, unsigned char *Anot) { 
     struct Li log = emLi; 
     log.W = 0; 
     char message [] = "LogFileInitialization";
@@ -37,9 +22,24 @@ void createlog(char *logname) {
     in.W = log.W; 
     SHA1((unsigned char *)&in, sizeof(struct YhashInput), log.Y);
     
-    ustrncpy(log.Z, MAC(Ao, log.Y, 20), 20);
+    ustrncpy(log.Z, MAC(Anot, log.Y, 20), 20);
 
-    //logo is create!
+    //lognot is created!
+    return log;
+
+}
+
+//Author: Caleb Rouleau
+void createlog(char *logname) { 
+    initOpenSSL();
+	logFileName = (char*) calloc(1,strlen(logname));
+	strncpy(logFileName, logname, strlen(logname));	
+    ustrncpy(originalKey, random256(), 32);
+    ustrncpy(Ao, random160(), 20);
+    ustrncpy(Aj, Ao, 20);
+    logfileNum++;
+    struct Li log = createlogDeterministic(originalKey, Ao);
+
 
     FILE *file_ptr = fopen(logname,"wb");
 	if (!file_ptr) {
@@ -48,8 +48,8 @@ void createlog(char *logname) {
 	}	
     fwrite(&log, sizeof(struct Li), 1, file_ptr);
     fclose(file_ptr);
-	logFileOpen = true;
 
+	logFileOpen = true;
     char ms[] = "LogfileOpenSuccess";
     add((unsigned char *)ms, strlen(ms));
 }

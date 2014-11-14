@@ -7,13 +7,20 @@ void verifyall(char * log_file_name, char * out_file_name) {
 		printf("The log named \"%s\" could not be opened. Perhaps it does not exist?\n", log_file_name);
 		return;
 	}
-
+    
 	//open the outfile for writing
 	FILE * outFile = fopen(out_file_name, "wb");
 	if (!outFile) {
 		printf("The out file named \"%s\" could not be opened.\n", out_file_name);
 		return;
 	}
+    if(verifyFirstLog(logFile, false)) {
+        char initMsg[] = "LogfileInitialization\n"; 
+        fwrite(initMsg, strlen(initMsg),1, outFile);
+    } else { 
+	    printf("Failed verification\n");
+        return;
+    }
 
 	//grab L0 as a starting point for "Lprev". This will require A0 and Ksession
 	struct Li Lprev = emLi; 
@@ -29,13 +36,6 @@ void verifyall(char * log_file_name, char * out_file_name) {
 
 		//start with L0 in Lprev
 		fread(&Lprev, sizeof(struct Li), 1, logFile);
-		if (isClosed) {
-				//Write L0's message to the log (if the log is properly closed)
-				
-				//screw it
-                char initMsg[] = "LogfileInitialization\n";
-				fwrite(initMsg, strlen(initMsg),1, outFile);
-		}
 		
 		unsigned char Acurr[20];
 		ustrncpy(Acurr, Ao, 20);
@@ -102,7 +102,10 @@ void verifyall(char * log_file_name, char * out_file_name) {
 		if (strncmp(message, "NormalCloseMessage", strlen("NormalCloseMessage")) == 0) {
 			printf("Setting isClosed to true\n");
 			isClosed = true;
-		}
+		} else { 
+            printf("Failed verification: incorrect close message\n");
+            return;
+        }
 	}
     fclose(logFile);
     fclose(outFile);

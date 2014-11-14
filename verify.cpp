@@ -1,9 +1,38 @@
 #include "verify.h"
 
+//Author: Caleb Rouleau
+bool verifyFirstLog(FILE *logFile, bool shouldPrint) { 
+    //because the first log is created deterministically and we have all the values, 
+    //we can simply compare the two logs
+    unsigned char AoNew[20]; 
+    ustrncpy(AoNew, Ao, 20); 
+    unsigned char newKey[32];
+    ustrncpy(newKey, originalKey, 32);
+   
+    struct Li correctLog = createlogDeterministic(originalKey, AoNew);
+    struct Li actualLog = emLi;
+    int fread_ret = fread(&actualLog, sizeof(struct Li), 1, logFile);
+    bool success;
+    if(fread_ret == 1 
+            && ustrnequ((unsigned char *)&correctLog, (unsigned char *)&actualLog, sizeof(struct Li))) { 
+        if(shouldPrint) {
+            printf("LogFileInitialization\n");
+        }
+        success = true; 
+    } else { 
+        if(shouldPrint) {
+            printf("Failed verification\n");
+        }
+        success = false;
+    }
+    fseek(logFile, 0, SEEK_SET);
+    return success;
+}
+
 //Written by Caleb Rouleau using code from Mike North
 void verify(int entry_no) {
     if(!logFileOpen) { 
-        printf("cannot verify a single log from a closed log file!\n");
+        printf("cannot verify a single log from a closed log file! (must use verifyall)\n");
     }
 	//open the logfile for reading
 	FILE * logFile = fopen(logFileName, "rb");
@@ -12,11 +41,15 @@ void verify(int entry_no) {
 		return;
 	}
 
+    if(entry_no == 0) { 
+        verifyFirstLog(logFile, true); 
+        fclose(logFile);
+        return;
+    }
     //grab L0 as a starting point for "Lprev". This will require A0 and Ksession
     struct Li Lprev = emLi; 
     struct Li Lcurr = emLi;
 
-    //scan to the start of the file (because we need to read through it twice
     fseek(logFile, 0, SEEK_SET);
 
     //start with L0 in Lprev
@@ -30,9 +63,11 @@ void verify(int entry_no) {
     bool failed = true;
 
     //loop through the log file until all structs have been read, processesing each log entry
-    for(int i = 0; i < entry_no; i++) { 
+    for(int i = 1; i <= entry_no; i++) { 
+        printf("in for\n");
         int fread_ret = fread(&Lcurr, sizeof(struct Li), 1, logFile);
         if(fread_ret != 1) { 
+            printf("breaking because couldn't read more\n");
             break; 
         }
         printf("Lcurr.W: %i\n", Lcurr.W);

@@ -10,7 +10,7 @@ char * logFileName;
 unsigned int logFileNameLen;
 unsigned char iv [16];
 bool logFileOpen;
-unsigned char Ko[20];
+unsigned char originalKey[32];
 
 struct Xi emXi;
 struct Li emLi;
