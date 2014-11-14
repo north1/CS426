@@ -12,7 +12,21 @@ unsigned char iv [16];
 bool logFileOpen;
 unsigned char Ko[20];
 
+struct Xi emXi;
+struct Li emLi;
+struct YhashInput emYhashInput;
+struct keySeed emkeySeed;
+
 int main() {
+	struct Xi *ex = (struct Xi*)calloc(1,sizeof(struct Xi));
+	emXi = *ex;
+	struct Li *el = (struct Li*)calloc(1,sizeof(struct Li));
+	emLi = *el;
+	struct YhashInput *ey = (struct YhashInput*)calloc(1,sizeof(struct YhashInput));
+	emYhashInput = *ey;
+	struct keySeed *es = (struct keySeed*)calloc(1,sizeof(struct keySeed));
+	emkeySeed = *es;
+
     ustrncpy(iv, random128(), 16); 
     logfileNum = 1; 
     pnonce = 1; 
@@ -26,7 +40,7 @@ int main() {
 	srand(time(NULL));
 
 	while (1) {
-		printf(	"Enter one of the following commands:\n"
+		/*printf(	"Enter one of the following commands:\n"
 			"createlog [filename].log\n"
 			"add [message_string]\n"
 			"closelog\n"
@@ -34,7 +48,7 @@ int main() {
 			"verifyall [log-file-name].log [out-file-name].txt\n"
 			"[Use ctrl+c to terminate program]\n\n");
 		fflush(stdout);
-
+*/
 		getline(&inputLine, &bufSize, stdin); //Get the full input text
 		cmd = strtok(inputLine, " \n"); //Get the first word (should be the command))
 

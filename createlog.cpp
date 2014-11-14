@@ -4,7 +4,7 @@
 void createlog(char *logname) { 
     initOpenSSL();
 
-	logFileName = (char*) malloc(strlen(logname));
+	logFileName = (char*) calloc(1,strlen(logname));
 	strncpy(logFileName, logname, strlen(logname));	
 
     unsigned char * ksession = random256(); 
@@ -16,7 +16,7 @@ void createlog(char *logname) {
     ustrncpy(Ao, random160(), 20);
     ustrncpy(Aj, Ao, 20);
 
-    struct Li log; 
+    struct Li log = emLi; 
     log.W = 0; 
     char message [] = "LogFileInitialization";
     unsigned char *EkDj = encryptAES((unsigned char *)message, strlen(message), 
@@ -27,7 +27,7 @@ void createlog(char *logname) {
         (unsigned char)0,(unsigned char)0,(unsigned char)0,(unsigned char)0,(unsigned char)0,
         (unsigned char)0,(unsigned char)0,(unsigned char)0,(unsigned char)0,(unsigned char)0,
         (unsigned char)0,(unsigned char)0,(unsigned char)0,(unsigned char)0,(unsigned char)0}; 
-    struct YhashInput in;
+    struct YhashInput in = emYhashInput;
     for(int i = 0; i < sizeof(struct YhashInput); i++) { 
         ((unsigned char *)&in)[i] = '\0'; 
     }

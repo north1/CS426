@@ -18,7 +18,7 @@ void add(unsigned char* message_string, int len) {
 
 	//Read the most recent entry, lastEntry (j-1th in descript)
 	//should contain oldType, oldEncryptedMessage, oldHashChain, oldIntegrity
-	struct Li * jminus1 = (struct Li *) malloc(sizeof(struct Li)); 
+	struct Li * jminus1 = (struct Li *) calloc(1, sizeof(struct Li)); 
 	fseek(logFile, -(sizeof(struct Li)), SEEK_END);
 	fread(jminus1, sizeof(struct Li), 1, logFile);
 	fclose(logFile);
@@ -29,24 +29,26 @@ void add(unsigned char* message_string, int len) {
 	int W = jminus1->W+1;	
 
 	//Form Keyj = H(type+access)
-	unsigned char * key = (unsigned char *) malloc(20);
-	struct keySeed * seed = (struct keySeed *)malloc(sizeof(struct keySeed));
+	unsigned char * key = (unsigned char *) calloc(1,32);
+	struct keySeed * seed = (struct keySeed *)calloc(1,sizeof(struct keySeed));
 	seed->W = W;
 	ustrncpy(seed->A, Aj, 20);
 	SHA1((unsigned char *)seed, 20, key);
-    printf("\n\n");
-    print(key, 20);
-    printf("\n%i", W);
-    printf("\n\n");
 	
 	//Encrypt (with Keyj) the message_string, Dj
 	int EkD_len = len + AES_BLOCK_SIZE;
-	unsigned char * EkD = (unsigned char *) malloc(EkD_len);
+	unsigned char * EkD = (unsigned char *) calloc(1,EkD_len);
 	EkD = encryptAES(message_string, len, key, iv, &EkD_len);
+	char *message = (char *)decryptAES(EkD, EkD_len, key, iv, &len);
+	//printf("message is %s\n", message_string);
+	//printf("message is %s\n", message);
+	//printf("EkD: ");
+	//print(EkD, EkD_len);
+	//printf("\nEkD_len: %i\n", EkD_len);
 
 	//Form Yj = H(oldHashChain, encryptedMessage, type)
 	unsigned char Y[20];
-	struct YhashInput * yInput = (struct YhashInput *)malloc(sizeof(struct YhashInput));
+	struct YhashInput * yInput = (struct YhashInput *)calloc(1,sizeof(struct YhashInput));
 	ustrncpy(yInput->YminusOne, jminus1->Y, 20);
 	ustrncpy(yInput->EkDj, EkD, EkD_len);
 	yInput->W = W;
@@ -55,20 +57,24 @@ void add(unsigned char* message_string, int len) {
 	//Take Zj = MAC_Aj(hashChain)
 	unsigned char Z[20];
 	ustrncpy(Z, MAC(Aj, Y, 20), 20);
-	
-	//Update Aj = H(Aj)
-	unsigned char Ajplus1[20];
-	SHA1(Aj, 20, Ajplus1);
-	ustrncpy(Aj, Ajplus1, 20);
-
 
 	//all together now!
-	struct Li log;
+	struct Li log = emLi;
 	log.W = W;
 	ustrncpy(log.EkDj, EkD, EkD_len);
 	log.EkDj_len = EkD_len;
 	ustrncpy(log.Y, Y, 20);
 	ustrncpy(log.Z, Z, 20);
+
+	printf("decrypted plaintext:");
+	int plaintext_len;
+	char * msg = (char *)getMessageFromLog(&log, Aj, &plaintext_len, iv);
+	printf("msg: %s\n", msg);
+	
+	//Update Aj = H(Aj)
+	unsigned char Ajplus1[20];
+	SHA1(Aj, 20, Ajplus1);
+	ustrncpy(Aj, Ajplus1, 20);
 
 	//write the new log to file
 	logFile = fopen(logFileName, "ab");

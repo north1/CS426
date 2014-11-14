@@ -41,4 +41,4 @@ utilities.o: utilities.cpp
 	
 #Author: Mike North,Caleb Rouleau
 clean:
-	rm -f *.o interface testUtil *.log
+	rm -f *.o interface testUtil *.log *.txt

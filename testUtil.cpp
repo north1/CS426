@@ -1,6 +1,7 @@
 //Author: Caleb Rouleau
 
 #include "utilities.h"
+#include "auditlog.h"
 #include <stdio.h>
 #include <string.h>
 

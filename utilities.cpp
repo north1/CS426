@@ -102,7 +102,7 @@ unsigned char * encryptAES(unsigned char *plaintext, int plaintext_len, unsigned
    * ciphertext which may be longer than the plaintext, dependant on the
    * algorithm and mode
    */
-  unsigned char * ciphertext = (unsigned char *)malloc(plaintext_len+AES_BLOCK_SIZE-1);
+  unsigned char * ciphertext = (unsigned char *)calloc(1,plaintext_len+AES_BLOCK_SIZE-1);
 
   /* Encrypt the plaintext */
   *ciphertext_len = encrypt(plaintext, plaintext_len, key, iv,
@@ -155,7 +155,7 @@ int decrypt(unsigned char *ciphertext, int ciphertext_len, unsigned char *key,
 //Author Caleb Rouleau
 unsigned char * decryptAES(unsigned char *ciphertext, int ciphertext_len,
         unsigned char *key, unsigned char *iv, int*plaintext_len) { 
-  unsigned char * plaintext = (unsigned char *)malloc(ciphertext_len+AES_BLOCK_SIZE-1);
+  unsigned char * plaintext = (unsigned char *)calloc(1,ciphertext_len+AES_BLOCK_SIZE);
   *plaintext_len = decrypt(ciphertext, ciphertext_len, key, iv,
     plaintext);
   return plaintext; 
@@ -185,23 +185,25 @@ unsigned char * MAC(unsigned char * key, unsigned char * data, int data_len) {
 }
 
 unsigned char * getMessageFromLog(struct Li * log, unsigned char *Aj, 
-        int *plaintext_len) {
+        int *plaintext_len, unsigned char *iv) {
 	//get the cipertext
 	unsigned char * ciphertext = log->EkDj;
 	int ciphertext_len = log->EkDj_len;
 
 	//get the key
-	unsigned char key[20];
-	struct keySeed seed;
-	seed.W = log->W;
-	ustrncpy(seed.A, Aj, 20);
-	SHA1((unsigned char *)&seed, 20, key);
+	unsigned char key[32];
+	for(int i = 0; i<32; i++) { 
+		key[i] = '\0';
+	}
+	struct keySeed *seed = (struct keySeed *)calloc(1, sizeof(struct keySeed));
+	seed->W = log->W;
+	ustrncpy(seed->A, Aj, 20);
+	SHA1((unsigned char *)seed, 20, key);
 
-    printf("\n\n");
-    print(key, 20);
-    printf("\n%i", log->W);
-    printf("\n\n");
-	
+	printf("ciphertext: ");
+	print(ciphertext, ciphertext_len);
+	printf("\nciphertext_len: %i\n", ciphertext_len);
+
 	//decrypt the ciphertext
 	return decryptAES(ciphertext, ciphertext_len, key, iv, plaintext_len);
 }

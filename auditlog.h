@@ -25,6 +25,11 @@ extern unsigned char iv[16];
 extern bool logFileOpen;
 extern unsigned char Ko[20];
 
+extern struct Xi emXi;
+extern struct Li emLi;
+extern struct YhashInput emYhashInput;
+extern struct keySeed emkeySeed;
+
 struct Xi { 
     unsigned char p; 
     time_t d; 
