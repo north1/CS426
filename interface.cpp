@@ -40,7 +40,7 @@ int main() {
 	srand(time(NULL));
 
 	while (1) {
-		/*printf(	"Enter one of the following commands:\n"
+		printf(	"\nEnter one of the following commands:\n"
 			"createlog [filename].log\n"
 			"add [message_string]\n"
 			"closelog\n"
@@ -48,16 +48,17 @@ int main() {
 			"verifyall [log-file-name].log [out-file-name].txt\n"
 			"[Use ctrl+c to terminate program]\n\n");
 		fflush(stdout);
-*/
+
 		getline(&inputLine, &bufSize, stdin); //Get the full input text
 		cmd = strtok(inputLine, " \n"); //Get the first word (should be the command))
 
 		if (strcmp(cmd, "createlog") == 0) {
 			arg = strtok(NULL, " \n");
-			printf("Command: createlog\n");
-			printf("Argument: %s\n", arg);
+			//printf("Command: createlog\n");
+			//printf("Argument: %s\n", arg);
             if(arg == NULL) { 
                 printf("invalid command!\n");
+                fflush(stdout);
                 continue;
             }
 		    createlog(arg); 
@@ -66,45 +67,47 @@ int main() {
 
 		else if (strcmp(cmd, "add") == 0) {
 			arg = strtok(NULL, " \n");
-			printf("Command: add\n");
-			printf("Argument: %s\n", arg);
+			//printf("Command: add\n");
+			//printf("Argument: %s\n", arg);
             int msgLen = strlen(arg); 
             if(msgLen > 450) { 
                 arg[450] = '\0'; 
             }
-			add((unsigned char *) arg, strlen(arg));
+			int wNew = add((unsigned char *) arg, strlen(arg));
+            if(wNew != -1) { 
+                printf("Added log entry number %i\n", wNew);
+            }
 		}
 
-
 		else if (strcmp(cmd, "closelog") == 0) {
-			printf("Command: closelog\n");
+			//printf("Command: closelog\n");
 			closelog();
 		}
 
 		else if (strcmp(cmd, "verify") == 0) {
 			arg = strtok(NULL, " \n");
-			printf("Command: verify\n");
-			printf("Argument: %s\n", arg);
+			//printf("Command: verify\n");
+			//printf("Argument: %s\n", arg);
             if(arg == NULL) { 
                 printf("invalid command!\n");
                 continue;
             }
             int entry = atoi(arg);
-            printf("entry is %i\n", entry);
             verify(entry);
 		}
 
 		else if (strcmp(cmd, "verifyall") == 0) {
 			arg = strtok(NULL, " \n");
 			arg2 = strtok(NULL, " \n");
-			printf("Command: verifyall\n");
-			printf("Argument 1: %s\n", arg);
-			printf("Argument 2: %s\n", arg2);
+			//printf("Command: verifyall\n");
+			//printf("Argument 1: %s\n", arg);
+			//printf("Argument 2: %s\n", arg2);
             verifyall(arg, arg2);
 		}
 
 		else {
 			printf("Invalid command\n\n");
+            fflush(stdout);
 		}
 	}
 

@@ -124,7 +124,7 @@ int decrypt(unsigned char *ciphertext, int ciphertext_len, unsigned char *key,
   int plaintext_len;
 
   /* Create and initialise the context */
-  if(!(ctx = EVP_CIPHER_CTX_new())) handleErrors();
+  if(!(ctx = EVP_CIPHER_CTX_new())) return handleErrors();
 
   /* Initialise the decryption operation. IMPORTANT - ensure you use a key
    * and IV size appropriate for your cipher
@@ -132,19 +132,19 @@ int decrypt(unsigned char *ciphertext, int ciphertext_len, unsigned char *key,
    * IV size for *most* modes is the same as the block size. For AES this
    * is 128 bits */
   if(1 != EVP_DecryptInit_ex(ctx, EVP_aes_256_cbc(), NULL, key, iv))
-    handleErrors();
+    return handleErrors();
 
   /* Provide the message to be decrypted, and obtain the plaintext output.
    * EVP_DecryptUpdate can be called multiple times if necessary
    */
   if(1 != EVP_DecryptUpdate(ctx, plaintext, &len, ciphertext, ciphertext_len))
-    handleErrors();
+    return handleErrors();
   plaintext_len = len;
 
   /* Finalise the decryption. Further plaintext bytes may be written at
    * this stage.
    */
-  if(1 != EVP_DecryptFinal_ex(ctx, plaintext + len, &len)) handleErrors();
+  if(1 != EVP_DecryptFinal_ex(ctx, plaintext + len, &len)) return handleErrors();
   plaintext_len += len;
 
   /* Clean up */
@@ -185,6 +185,7 @@ unsigned char * MAC(unsigned char * key, unsigned char * data, int data_len) {
 	return digest;
 }
 
+//Author: Caleb Rouleau
 unsigned char * getMessageFromLog(struct Li * log, unsigned char *Aj, 
         int *plaintext_len, unsigned char *iv) {
 	//get the cipertext
@@ -200,10 +201,6 @@ unsigned char * getMessageFromLog(struct Li * log, unsigned char *Aj,
 	seed->W = log->W;
 	ustrncpy(seed->A, Aj, 20);
 	SHA1((unsigned char *)seed, 20, key);
-
-	printf("ciphertext: ");
-	print(ciphertext, ciphertext_len);
-	printf("\nciphertext_len: %i\n", ciphertext_len);
 
 	//decrypt the ciphertext
 	return decryptAES(ciphertext, ciphertext_len, key, iv, plaintext_len);

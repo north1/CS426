@@ -21,5 +21,6 @@ void closelog() {
 	
 	logFileOpen = false;	
 
-
+    printf("Closed %s\n", logFileName);
+    fflush(stdout);
 }

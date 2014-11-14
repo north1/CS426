@@ -1,5 +1,6 @@
 #include "createlog.h"
 
+//Author: Caleb Rouleau. bug fixes by Mike North
 struct Li createlogDeterministic(unsigned char *ksession, unsigned char *Anot) { 
     struct Li log = emLi; 
     log.W = 0; 
@@ -44,13 +45,15 @@ void createlog(char *logname) {
     FILE *file_ptr = fopen(logname,"wb");
 	if (!file_ptr) {
 		printf("The log named \"%s\" could not be opened.\n", logFileName);
+        fflush(stdout);
 		return;
 	}	
     fwrite(&log, sizeof(struct Li), 1, file_ptr);
     fclose(file_ptr);
 
 	logFileOpen = true;
-    char ms[] = "LogfileOpenSuccess";
-    add((unsigned char *)ms, strlen(ms));
+
+    printf("Created %s\n", logname);
+    fflush(stdout);
 }
 

@@ -5,6 +5,7 @@ void verifyall(char * log_file_name, char * out_file_name) {
 	FILE * logFile = fopen(log_file_name, "rb");
 	if (!logFile) {
 		printf("The log named \"%s\" could not be opened. Perhaps it does not exist?\n", log_file_name);
+        fflush(stdout);
 		return;
 	}
     
@@ -12,13 +13,15 @@ void verifyall(char * log_file_name, char * out_file_name) {
 	FILE * outFile = fopen(out_file_name, "wb");
 	if (!outFile) {
 		printf("The out file named \"%s\" could not be opened.\n", out_file_name);
+        fflush(stdout);
 		return;
 	}
     if(verifyFirstLog(logFile, false)) {
-        char initMsg[] = "LogfileInitialization\n"; 
-        fwrite(initMsg, strlen(initMsg),1, outFile);
+        //char initMsg[] = "LogfileInitialization\n"; 
+        //fwrite(initMsg, strlen(initMsg),1, outFile);
     } else { 
 	    printf("Failed verification\n");
+        fflush(stdout);
         return;
     }
 
@@ -30,6 +33,7 @@ void verifyall(char * log_file_name, char * out_file_name) {
 	//anything to file if it has not been closed, So we go through the entire logfile twice,
 	//first to find the properly closed message
 	bool isClosed = false;
+    int knowncount = -1;
 	for (int twice = 0; twice < 2; twice++) {
 		//scan to the start of the file (because we need to read through it twice
 		fseek(logFile, 0, SEEK_SET);
@@ -41,13 +45,11 @@ void verifyall(char * log_file_name, char * out_file_name) {
 		ustrncpy(Acurr, Ao, 20);
 
 		unsigned char Aprev[20];
-
+        int logcount = 0;
 		//loop through the log file until all structs have been read, processesing each log entry
 		while (fread(&Lcurr, sizeof(struct Li), 1, logFile) == 1) {
-            printf("Lcurr.W: %i\n", Lcurr.W);
-            fflush(stdout);
-
-			//check that Lcurr.Y = H(Lprev.Y, Lcurr.Ekj(Dj), Lcurr.W)
+			
+            //check that Lcurr.Y = H(Lprev.Y, Lcurr.Ekj(Dj), Lcurr.W)
 			unsigned char correctY[20];
 			struct YhashInput yInput = emYhashInput;
 			for(int i = 0; i < sizeof(struct YhashInput); i++) { 
@@ -73,10 +75,15 @@ void verifyall(char * log_file_name, char * out_file_name) {
 				return;
 			}
 			
+            logcount++;
 			//if we're here, log is valid so far. if we've also found the file is closed, write to out
-			if (isClosed) {
+			if (isClosed && logcount<knowncount) {
 				int plaintext_len;
 				char * message = (char *)getMessageFromLog(&Lcurr, Acurr, &plaintext_len, iv);
+                if(plaintext_len == 0) { 
+                    printf("Failed verification: message is broken\n");
+                    return;
+                }
 				for (int i = 0; i < plaintext_len; i++) {
 					fputc(message[i], outFile);
 				}
@@ -91,16 +98,13 @@ void verifyall(char * log_file_name, char * out_file_name) {
 			SHA1(Acurr, 20, temp);
 			ustrncpy(Aprev, Acurr, 20);
 			ustrncpy(Acurr, temp, 20);
+
 		}
+        knowncount = logcount;
 		//check if the last entry's message is a valid closelog
 		int plaintext_len;
 		char *message = (char *)getMessageFromLog(&Lprev, Aprev, &plaintext_len, iv);
-		printf("Message: ");
-		print((unsigned char *) message, strlen(message));
-		printf("\"NormalCloseMessage\": ");
-		print((unsigned char *) "NormalCloseMessage", strlen("NormalCloseMessage"));
 		if (strncmp(message, "NormalCloseMessage", strlen("NormalCloseMessage")) == 0) {
-			printf("Setting isClosed to true\n");
 			isClosed = true;
 		} else { 
             printf("Failed verification: incorrect close message\n");

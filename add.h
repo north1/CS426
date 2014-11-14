@@ -3,5 +3,5 @@
 #include "utilities.h"
 #include "auditlog.h"
 
-void add(unsigned char *, int);
+int add(unsigned char *, int);
 

@@ -17,11 +17,13 @@ bool verifyFirstLog(FILE *logFile, bool shouldPrint) {
             && ustrnequ((unsigned char *)&correctLog, (unsigned char *)&actualLog, sizeof(struct Li))) { 
         if(shouldPrint) {
             printf("LogFileInitialization\n");
+            fflush(stdout);
         }
         success = true; 
     } else { 
         if(shouldPrint) {
             printf("Failed verification\n");
+            fflush(stdout);
         }
         success = false;
     }
@@ -33,11 +35,13 @@ bool verifyFirstLog(FILE *logFile, bool shouldPrint) {
 void verify(int entry_no) {
     if(!logFileOpen) { 
         printf("cannot verify a single log from a closed log file! (must use verifyall)\n");
+        fflush(stdout);
     }
 	//open the logfile for reading
 	FILE * logFile = fopen(logFileName, "rb");
 	if (!logFile) {
 		printf("The log named \"%s\" could not be opened. Perhaps it does not exist?\n", logFileName);
+        fflush(stdout);
 		return;
 	}
 
@@ -64,13 +68,10 @@ void verify(int entry_no) {
 
     //loop through the log file until all structs have been read, processesing each log entry
     for(int i = 1; i <= entry_no; i++) { 
-        printf("in for\n");
         int fread_ret = fread(&Lcurr, sizeof(struct Li), 1, logFile);
         if(fread_ret != 1) { 
-            printf("breaking because couldn't read more\n");
             break; 
         }
-        printf("Lcurr.W: %i\n", Lcurr.W);
         fflush(stdout);
 
         if(i == entry_no) { 
@@ -121,7 +122,8 @@ void verify(int entry_no) {
     }
 
     if(failed) { 
-        printf("Failed verification\n");
+        printf("Failed verification.\n");
+        fflush(stdout);
     }
 
     fclose(logFile);

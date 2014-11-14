@@ -1,11 +1,11 @@
 #include "auditlog.h"
 
-//Author: Pair programming Mike North, Caleb Rouleau
-void add(unsigned char* message_string, int len) {
+//Author: Mike North with refactoring/bug fixes by Caleb Rouleau
+int add(unsigned char* message_string, int len) {
 
 	if (!logFileOpen) {
 		printf("A log file has not yet been opened. Use createlog [logfilename].log]\n");
-		return;
+		return -1;
 	}
 
 	//Ensure a log is open, print the error and return if not
@@ -13,7 +13,7 @@ void add(unsigned char* message_string, int len) {
 	FILE * logFile = fopen(logFileName, "rb");
 	if (!logFile) {
 		printf("The log named \"%s\" could not be opened.\n", logFileName);
-		return;
+		return -1;
 	}
 
 	//Read the most recent entry, lastEntry (j-1th in descript)
@@ -40,11 +40,6 @@ void add(unsigned char* message_string, int len) {
 	unsigned char * EkD = (unsigned char *) calloc(1,EkD_len);
 	EkD = encryptAES(message_string, len, key, iv, &EkD_len);
 	char *message = (char *)decryptAES(EkD, EkD_len, key, iv, &len);
-	//printf("message is %s\n", message_string);
-	//printf("message is %s\n", message);
-	//printf("EkD: ");
-	//print(EkD, EkD_len);
-	//printf("\nEkD_len: %i\n", EkD_len);
 
 	//Form Yj = H(oldHashChain, encryptedMessage, type)
 	unsigned char Y[20];
@@ -66,10 +61,8 @@ void add(unsigned char* message_string, int len) {
 	ustrncpy(log.Y, Y, 20);
 	ustrncpy(log.Z, Z, 20);
 
-	printf("decrypted plaintext:");
 	int plaintext_len;
 	char * msg = (char *)getMessageFromLog(&log, Aj, &plaintext_len, iv);
-	printf("msg: %s\n", msg);
 	
 	//Update Aj = H(Aj)
 	unsigned char Ajplus1[20];
@@ -80,11 +73,12 @@ void add(unsigned char* message_string, int len) {
 	logFile = fopen(logFileName, "ab");
 	if (!logFile) {
 		printf("The log named \"%s\" could not be opened.\n", logFileName);
-		return;
+        fflush(stdout);
+		return -1;
 	}
 //	fseek(logFile, 0, SEEK_END);
     fwrite(&log, sizeof(struct Li), 1, logFile);
     fclose(logFile);
 
-	return;
+	return W;
 }
